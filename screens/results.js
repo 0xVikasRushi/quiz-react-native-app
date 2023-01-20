@@ -3,7 +3,7 @@ import React from "react";
 
 const Results = () => {
   return (
-    <View>
+    <View style={styles.container}>
       <Text>Results</Text>
       <View style={styles.bannerContainer}>
         <Image
@@ -30,5 +30,10 @@ const styles = StyleSheet.create({
   bannerContainer: {
     justifyContent: "center",
     alignItems: "center",
+  },
+  container: {
+    paddingTop: 40,
+    paddingHorizontal: 30,
+    height: "100%",
   },
 });
