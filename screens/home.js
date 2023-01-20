@@ -20,8 +20,11 @@ const Home = ({ navigation }) => {
           style={styles.banner}
         />
       </View>
-      <TouchableOpacity onPress={() => navigation.navigate("Quiz")}>
-        <Text>Start</Text>
+      <TouchableOpacity
+        style={styles.buttons}
+        onPress={() => navigation.navigate("Quiz")}
+      >
+        <Text style={styles.buttontext}>Start</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
@@ -41,5 +44,17 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: 40,
     paddingHorizontal: 30,
+    height: "100%",
+  },
+  buttons: {
+    width: "100%",
+    backgroundColor: "#1A759F",
+    padding: 20,
+    borderRadius: 16,
+  },
+  buttontext: {
+    fontSize: 24,
+    color: "white",
+    fontWeight: "600",
   },
 });
