@@ -4,20 +4,38 @@ import React, { useState, useEffect } from "react";
 const Quiz = () => {
   const [questions, setQuestions] = useState();
   const [ques, setQues] = useState(0);
+  const [options, setOptions] = useState([]);
+
   const getQuiz = async () => {
     const url =
       "https://opentdb.com/api.php?amount=10&category=18&difficulty=easy&type=multiple";
     const res = await fetch(url);
     const data = await res.json();
+    // console.log(data.results);
     setQuestions(data.results);
+    generateAndShuffle(data.results[ques]);
   };
 
   useEffect(() => {
     getQuiz();
-  }, []);
+  }, [ques]);
+
+  const generateAndShuffle = (_arr) => {
+    const option = [..._arr.incorrect_answers];
+    option.push(_arr.correct_answer);
+    shuffleArrays(option);
+    setOptions(option);
+  };
 
   const handleNext = () => {
     if (questions !== 9) setQues(ques + 1);
+  };
+
+  const shuffleArrays = (array) => {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
   };
 
   return (
@@ -25,24 +43,26 @@ const Quiz = () => {
       {questions && (
         <View style={styles.parent}>
           <View style={styles.top}>
-            <Text style={styles.topText}>Q .{questions[ques].question}</Text>
+            <Text style={styles.topText}>
+              Q .{decodeURIComponent(questions[ques].question)}
+            </Text>
           </View>
 
           <View style={styles.options}>
             <TouchableOpacity style={styles.optionsButtons}>
-              <Text style={styles.option}>option 1</Text>
+              <Text style={styles.option}>{options[0]}</Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.optionsButtons}>
-              <Text style={styles.option}>option 2</Text>
+              <Text style={styles.option}>{options[1]}</Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.optionsButtons}>
-              <Text style={styles.option}>option 3</Text>
+              <Text style={styles.option}>{options[2]}</Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.optionsButtons}>
-              <Text style={styles.option}>option 4</Text>
+              <Text style={styles.option}>{options[3]}</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.buttons}>
