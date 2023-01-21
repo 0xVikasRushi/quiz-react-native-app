@@ -1,46 +1,69 @@
 import { StyleSheet, TouchableOpacity, Text, View } from "react-native";
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 const Quiz = () => {
+  const [questions, setQuestions] = useState();
+  const [ques, setQues] = useState(0);
+  const getQuiz = async () => {
+    const url =
+      "https://opentdb.com/api.php?amount=10&category=18&difficulty=easy&type=multiple";
+    const res = await fetch(url);
+    const data = await res.json();
+    setQuestions(data.results);
+  };
+
+  useEffect(() => {
+    getQuiz();
+  }, []);
+
+  const handleNext = () => {
+    if (questions !== 9) setQues(ques + 1);
+  };
+
   return (
     <View style={styles.container}>
-      <View style={styles.top}>
-        <Text style={styles.topText}>
-          Question this is question jdbnsad jhdksa
-        </Text>
-      </View>
+      {questions && (
+        <View style={styles.parent}>
+          <View style={styles.top}>
+            <Text style={styles.topText}>Q .{questions[ques].question}</Text>
+          </View>
 
-      <View style={styles.options}>
-        <TouchableOpacity style={styles.optionsButtons}>
-          <Text style={styles.option}>option 1</Text>
-        </TouchableOpacity>
+          <View style={styles.options}>
+            <TouchableOpacity style={styles.optionsButtons}>
+              <Text style={styles.option}>option 1</Text>
+            </TouchableOpacity>
 
-        <TouchableOpacity style={styles.optionsButtons}>
-          <Text style={styles.option}>option 2</Text>
-        </TouchableOpacity>
+            <TouchableOpacity style={styles.optionsButtons}>
+              <Text style={styles.option}>option 2</Text>
+            </TouchableOpacity>
 
-        <TouchableOpacity style={styles.optionsButtons}>
-          <Text style={styles.option}>option 3</Text>
-        </TouchableOpacity>
+            <TouchableOpacity style={styles.optionsButtons}>
+              <Text style={styles.option}>option 3</Text>
+            </TouchableOpacity>
 
-        <TouchableOpacity style={styles.optionsButtons}>
-          <Text style={styles.option}>option 4</Text>
-        </TouchableOpacity>
-      </View>
+            <TouchableOpacity style={styles.optionsButtons}>
+              <Text style={styles.option}>option 4</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.buttons}>
+            <TouchableOpacity style={styles.button}>
+              <Text style={styles.buttontext}>Skip</Text>
+            </TouchableOpacity>
 
-      <View style={styles.buttons}>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttontext}>Skip</Text>
-        </TouchableOpacity>
+            {ques === 9 && (
+              <TouchableOpacity style={styles.button}>
+                <Text style={styles.buttontext}>End</Text>
+              </TouchableOpacity>
+            )}
 
-        {/* <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttontext}>End</Text>
-        </TouchableOpacity> */}
-
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttontext}>Next</Text>
-        </TouchableOpacity>
-      </View>
+            {ques !== 9 && (
+              <TouchableOpacity style={styles.button} onPress={handleNext}>
+                <Text style={styles.buttontext}>Next</Text>
+              </TouchableOpacity>
+            )}
+          </View>
+        </View>
+      )}
     </View>
   );
 };
@@ -91,4 +114,5 @@ const styles = StyleSheet.create({
     backgroundColor: "#1A759F",
     paddingHorizontal: 12,
   },
+  parent: { height: "100%" },
 });
